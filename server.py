@@ -702,7 +702,13 @@ async def join_room(sid, data):
 async def shutdown_db_client():
     client.close()
 
-# For running with Socket.IO
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(socket_app, host="0.0.0.0", port=8001)
+    import os
+    
+    # Render provides the port via the PORT environment variable
+    # We default to 8001 for local development
+    port = int(os.environ.get("PORT", 8001))
+    
+    # host MUST be 0.0.0.0 for Render to detect the open port
+    uvicorn.run(socket_app, host="0.0.0.0", port=port)
